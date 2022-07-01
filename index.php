@@ -29,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]];
 
     file_put_contents($filename, json_encode($todos));
+    $todo = '';
+    header('Location: /');
   }
 }
 
@@ -54,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>Exercice Todo List</h1>
     <div class="todo-container">
       <form action="" method="POST" class="form">
-        <input type="text" name="todo" class="form-todo">
+        <input type="text" name="todo" class="form-todo" value="<?= $todo ?>">
         <button type="submit" class="btn">Ajouter</button>
       </form>
       <div class="form-error">
@@ -62,13 +64,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
       <ul>
         <?php foreach ($todos as $t) : ?>
-          <li class="todo-list">
-            <p><?= $t['name'] ?></p>
-            <button class="btn">Modifier</button>
-            <button class="btn">Supprimmer</button>
+          <li class="todo-list ">
+            <p class="<?= $t['done'] ? 'barre' : '' ?>"><?= $t['name'] ?></p>
+            <a href="/edit-todo.php?id=<?= $t['id'] ?>">
+              <button class="btn"><?= $t['done'] ? 'Annuler' : 'Valider' ?></button>
+            </a>
+            <a href="/delete-todo.php?id=<?= $t['id'] ?>">
+              <button class="btn">Supprimmer</button>
+            </a>
           </li>
         <?php endforeach ?>
-
       </ul>
     </div>
   </div>
